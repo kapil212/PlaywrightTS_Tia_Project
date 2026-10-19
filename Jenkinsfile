@@ -19,7 +19,7 @@ pipeline{
 
                 sh 'node --version || echo "node not found on Jenkins agent — expected, we will use Docker next"'
                 sh 'docker --version'
-                sg 'ls -la'
+                sh 'ls -la'
             }
 
 
