@@ -1,31 +1,21 @@
-pipeline{
-
+pipeline {
     agent any
 
-    stages {
-
-        stage ('Checkout') {
-
-            steps {
-                checkout scm
-            }
-
-
-        }
-
-        stage ('Verify environment') {
-
-            steps {
-
-                sh 'node --version || echo "node not found on Jenkins agent — expected, we will use Docker next"'
-                sh 'docker --version'
-                sh 'ls -la'
-            }
-
-
-        }
-
-
+    environment {
+        IMAGE_NAME = 'tia-tests'
     }
 
+    stages {
+        stage('Verify Environment') {
+            steps {
+                sh 'docker --version'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} -t ${IMAGE_NAME}:latest .'
+            }
+        }
+    }
 }
